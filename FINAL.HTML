@@ -1,0 +1,711 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>The Crimson Cipher - Access Required</title>
+  <link href="https://fonts.googleapis.com/css2?family=Creepster&display=swap" rel="stylesheet" />
+  <style>
+    /* Reset and base styles */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    body {
+      font-family: 'Courier New', monospace;
+      background: linear-gradient(135deg, #000000 0%, #1a1a1a 50%, #2d2d2d 100%);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      position: relative;
+      color: #fff;
+    }
+    body::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0;
+      width: 100%;
+      height: 100%;
+      background-image:
+        radial-gradient(circle at 20% 80%, rgba(80, 80, 80, 0.1) 0%, transparent 50%),
+        radial-gradient(circle at 80% 20%, rgba(50, 50, 50, 0.1) 0%, transparent 50%);
+      animation: pulse 8s ease-in-out infinite alternate;
+      z-index: -2;
+    }
+    @keyframes pulse {
+      0% {opacity: 0.3;}
+      100% {opacity: 0.7;}
+    }
+
+    /* Container */
+    .container {
+      background: linear-gradient(135deg, rgba(25, 5, 5, 0.9) 0%, rgba(35, 10, 10, 0.8) 50%, rgba(45, 8, 8, 0.9) 100%);
+      border: 3px solid #000000;
+      border-radius: 15px;
+      padding: 40px 50px;
+      max-width: 450px;
+      width: 90%;
+      box-shadow:
+        0 0 0 2px #8B0000,
+        0 0 20px rgba(139, 0, 0, 0.3),
+        0 0 40px rgba(100, 0, 0, 0.1),
+        inset 0 0 15px rgba(150, 20, 20, 0.1);
+      position: relative;
+      backdrop-filter: blur(10px);
+      animation: containerPulse 4s ease-in-out infinite alternate;
+      z-index: 10;
+    }
+    @keyframes containerPulse {
+      0% {
+        box-shadow:
+          0 0 0 2px #8B0000,
+          0 0 20px rgba(139, 0, 0, 0.3),
+          0 0 40px rgba(100, 0, 0, 0.1),
+          inset 0 0 15px rgba(150, 20, 20, 0.1);
+      }
+      100% {
+        box-shadow:
+          0 0 0 2px #8B0000,
+          0 0 25px rgba(139, 0, 0, 0.4),
+          0 0 50px rgba(100, 0, 0, 0.15),
+          inset 0 0 20px rgba(150, 20, 20, 0.15);
+      }
+    }
+    .container::before {
+      content: '';
+      position: absolute;
+      top: -3px; left: -3px; right: -3px; bottom: -3px;
+      background: linear-gradient(45deg, #8B0000, #A0522D, #654321, #8B0000, #800000, #A52A2A);
+      background-size: 300% 300%;
+      border-radius: 15px;
+      z-index: -1;
+      animation: fireGlow 2s linear infinite;
+      opacity: 0.4;
+    }
+    @keyframes fireGlow {
+      0% {background-position: 0% 50%;}
+      50% {background-position: 100% 50%;}
+      100% {background-position: 0% 50%;}
+    }
+
+    /* Title and subtitle */
+    .title {
+      text-align: center;
+      color: #ff6b6b;
+      font-size: 2.5em;
+      margin-bottom: 10px;
+      text-shadow: 0 0 10px rgba(255, 107, 107, 0.5);
+      animation: flicker 2s infinite alternate;
+    }
+    @keyframes flicker {
+      0%, 100% {
+        opacity: 1;
+        text-shadow: 0 0 10px rgba(255, 107, 107, 0.5);
+      }
+      50% {
+        opacity: 0.8;
+        text-shadow: 0 0 5px rgba(255, 107, 107, 0.3);
+      }
+    }
+    .subtitle {
+      text-align: center;
+      color: #888;
+      margin-bottom: 30px;
+      font-size: 0.9em;
+      letter-spacing: 2px;
+    }
+
+    /* Form styles */
+    .form-group {
+      margin-bottom: 25px;
+      position: relative;
+    }
+    label {
+      color: #ccc;
+      display: block;
+      margin-bottom: 8px;
+      font-size: 0.9em;
+      letter-spacing: 1px;
+    }
+    input[type="text"],
+    input[type="email"],
+    input[type="password"],
+    textarea {
+      width: 100%;
+      padding: 12px 15px;
+      background: rgba(20, 20, 20, 0.9);
+      border: 1px solid #444;
+      border-radius: 5px;
+      color: #fff;
+      font-family: 'Courier New', monospace;
+      transition: all 0.3s ease;
+      resize: vertical;
+    }
+    input[type="text"]:focus,
+    input[type="email"]:focus,
+    input[type="password"]:focus,
+    textarea:focus {
+      outline: none;
+      border-color: #ff6b6b;
+      box-shadow: 0 0 10px rgba(255, 107, 107, 0.3);
+      background: rgba(30, 30, 30, 0.9);
+    }
+
+    .warning {
+      background: rgba(255, 107, 107, 0.1);
+      border: 1px solid rgba(255, 107, 107, 0.3);
+      padding: 15px;
+      border-radius: 5px;
+      margin-bottom: 20px;
+      color: #ff9999;
+      font-size: 0.85em;
+      text-align: center;
+      animation: fadeIn 2s ease-in;
+    }
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(-10px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    /* Buttons */
+    .submit-btn {
+      width: 100%;
+      padding: 15px;
+      background: linear-gradient(45deg, #ff6b6b, #ff8e8e);
+      border: none;
+      border-radius: 5px;
+      color: #000;
+      font-family: 'Courier New', monospace;
+      font-weight: bold;
+      font-size: 1.1em;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+    }
+    .submit-btn:hover {
+      background: linear-gradient(45deg, #ff5252, #ff7979);
+      box-shadow: 0 5px 15px rgba(255, 107, 107, 0.4);
+      transform: translateY(-2px);
+    }
+    .submit-btn:active {
+      transform: translateY(0);
+    }
+
+    .footer-text {
+      text-align: center;
+      margin-top: 20px;
+      color: #FF0000;
+      font-size: 0.9em;
+      font-weight: bold;
+      text-shadow: 0 0 10px rgba(255, 0, 0, 0.8), 1px 1px 2px rgba(0, 0, 0, 0.8);
+      animation: typing 4s steps(40) 1s both;
+      white-space: nowrap;
+      overflow: hidden;
+      border-right: 2px solid #FF0000;
+      letter-spacing: 1px;
+    }
+    @keyframes typing {
+      from {width: 0;}
+      to {width: 100%;}
+    }
+
+    /* Shake animation for wrong code */
+    @keyframes shake {
+      0%, 100% {transform: translateX(0);}
+      25% {transform: translateX(-5px);}
+      75% {transform: translateX(5px);}
+    }
+
+    /* Hide pages by default */
+    #challengePage {
+      display: none;
+    }
+
+    #thirdPage {
+      display: none;
+    }
+
+    /* Mobile responsiveness */
+    @media (max-width: 768px) {
+      .container {
+        padding: 30px 25px;
+        margin: 20px;
+      }
+      .title {
+        font-size: 2em;
+      }
+    }
+
+    /* Third page styles */
+    #thirdPage {
+      margin: 0;
+      padding: 0;
+      height: 100vh;
+      width: 100vw;
+      display: none;
+      justify-content: center;
+      align-items: center;
+      font-family: 'Creepster', cursive;
+      user-select: none;
+      background-color: #000000;
+      background-image:
+        radial-gradient(circle at center, rgba(30, 0, 0, 0.6), transparent 70%),
+        url('https://www.transparenttextures.com/patterns/noise.png');
+      background-repeat: repeat;
+      animation: noise 10s infinite linear;
+      position: fixed;
+      top: 0;
+      left: 0;
+      overflow: hidden;
+      z-index: 1000;
+    }
+
+    @keyframes noise {
+      0%, 100% { background-position: 0 0; }
+      50% { background-position: 100% 100%; }
+    }
+
+    #thirdPage::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0; bottom: 0;
+      pointer-events: none;
+      background: radial-gradient(circle, rgba(139,0,0,0.6) 60%, transparent 90%);
+      z-index: 1;
+    }
+
+    #thirdPage h1 {
+      position: relative;
+      font-size: 5em;
+      font-weight: normal;
+      color: #ff0000;
+      text-shadow:
+        0 0 10px #ff0000,
+        0 0 30px #aa0000,
+        0 0 60px #550000;
+      opacity: 0;
+      animation: fadeInText 4s forwards;
+      text-align: center;
+      padding: 0 15px;
+      z-index: 2;
+      cursor: pointer;
+      user-select: none;
+      transition: transform 0.2s ease;
+    }
+
+    #thirdPage h1:active {
+      transform: scale(0.95);
+    }
+
+    @keyframes fadeInText {
+      to {
+        opacity: 1;
+      }
+    }
+
+    .corner-link {
+      position: fixed;
+      color: #ff0000;
+      background: rgba(0,0,0,0.7);
+      padding: 8px 12px;
+      font-family: 'Courier New', monospace;
+      font-weight: bold;
+      text-decoration: none;
+      border: 1px solid #ff0000;
+      border-radius: 5px;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 1s ease;
+      z-index: 5;
+      user-select: none;
+    }
+
+    .corner-link.show {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .top-left    { top: 15px; left: 15px; }
+    .top-right   { top: 15px; right: 15px; }
+    .bottom-left { bottom: 15px; left: 15px; }
+    .bottom-right{ bottom: 15px; right: 15px; }
+
+    #countdownModal {
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(0,0,0,0.95);
+      display: none;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      z-index: 100;
+      font-family: 'Creepster', cursive;
+      color: #ff0000;
+      text-align: center;
+      user-select: none;
+    }
+
+    #countdownNumber {
+      font-size: 10em;
+      text-shadow:
+        0 0 10px #ff0000,
+        0 0 30px #aa0000,
+        0 0 60px #550000;
+    }
+
+    #finalText {
+      font-size: 6em;
+      margin-top: 40px;
+      text-shadow:
+        0 0 10px #ff0000,
+        0 0 30px #aa0000;
+      display: none;
+    }
+
+    #whiteScreen, #finalWarningScreen {
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      display: none;
+      justify-content: center;
+      align-items: center;
+      z-index: 200;
+      user-select: none;
+      flex-direction: column;
+    }
+
+    #whiteScreen {
+      background: white;
+      color: #b30000;
+      font-family: 'Creepster', cursive;
+      font-size: 6em;
+      text-align: center;
+      cursor: pointer;
+      text-shadow:
+        0 0 10px #b30000,
+        0 0 30px #800000;
+    }
+
+    #finalWarningScreen {
+      background: #6b0000; /* blood red */
+      color: #ff3200;
+      font-family: 'Creepster', cursive;
+      font-size: 4em;
+      text-align: center;
+      cursor: pointer;
+      text-shadow:
+        0 0 10px #ff3200,
+        0 0 20px #ff5a00;
+    }
+
+    /* Bounce animation for finalWarning */
+    @keyframes bounce {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-20px); }
+    }
+    .bounce {
+      animation: bounce 0.5s ease;
+    }
+
+    /* YOU screen styles */
+    #youScreen {
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: black;
+      color: #ff0000;
+      font-family: 'Creepster', cursive;
+      font-size: 6em;
+      text-align: center;
+      display: none;
+      justify-content: center;
+      align-items: center;
+      z-index: 300;
+      user-select: none;
+      text-shadow:
+        0 0 10px #ff0000,
+        0 0 30px #aa0000;
+    }
+  </style>
+</head>
+<body>
+  <!-- Signup Page -->
+  <div class="container" id="signupPage">
+    <h1 class="title">THE CRIMSON CIPHER</h1>
+    <p class="subtitle">ACCESS RESTRICTED</p>
+
+    <div class="warning">
+      ⚠️ WARNING: Unauthorized access detected. All activities are being monitored.
+    </div>
+
+    <form id="signupForm">
+      <div class="form-group">
+        <label for="name">Name</label>
+        <input type="text" id="name" name="name" required autocomplete="off" />
+      </div>
+
+      <div class="form-group">
+        <label for="species">Species</label>
+        <input type="text" id="species" name="species" required autocomplete="off" />
+      </div>
+
+      <div class="form-group">
+        <label for="password">Access Code</label>
+        <input type="password" id="password" name="password" required autocomplete="off" />
+      </div>
+
+      <button type="submit" class="submit-btn">Enter the Archives</button>
+    </form>
+
+    <p class="footer-text">You cannot escape what has already begun...</p>
+  </div>
+
+  <!-- Challenge Page -->
+  <div class="container" id="challengePage">
+    <h1 class="title">Hmm.. python scaryyy...</h1>
+    <p class="subtitle">Enter Python code that prints this pattern:</p>
+    <pre style="background:#111; padding: 10px; border-radius: 5px; color: #ff6b6b; font-size:1.1em;">
+******
+*****
+****
+***
+**
+*
+    </pre>
+
+    <form id="patternForm">
+      <div class="form-group">
+        <label for="pythonCode">Your Python code:</label>
+        <textarea id="pythonCode" name="pythonCode" rows="8" placeholder="Write your Python code here..." required></textarea>
+      </div>
+
+      <button type="submit" class="submit-btn">Submit Code</button>
+    </form>
+
+    <p class="footer-text" style="color:#8B0000;">Prove your worth mortal..</p>
+  </div>
+
+  <!-- Third Page -->
+  <div id="thirdPage">
+    <h1 id="eerieText">EYES.. THEY ARE DECEVING..</h1>
+
+    <a href="https://imgflip.com/i/9w5shm" target="_blank" class="corner-link top-left">TRY</a>
+    <a href="#" id="ifLink" class="corner-link top-right">IF</a>
+    <a href="#" class="corner-link bottom-left" id="youLink">YOU</a>
+    <a href="#" id="dareLink" class="corner-link bottom-right">DARE..</a>
+
+    <div id="countdownModal" aria-modal="true" role="dialog">
+      <div id="countdownNumber">5</div>
+      <div id="finalText">SYBAU TS PMO</div>
+    </div>
+
+    <div id="whiteScreen">FINALLY YOU MADE IT..</div>
+    <div id="finalWarningScreen">SEEKERS WHO SEEK WILL..?</div>
+  </div>
+
+  <!-- YOU Screen -->
+  <div id="youScreen">
+    <div>
+      <div id="youCountdownNumber">5</div>
+      <div id="youFinalText" style="display: none;">ESCAPE IS AN ILLUSION..</div>
+    </div>
+  </div>
+
+  <script>
+    const signupPage = document.getElementById('signupPage');
+    const challengePage = document.getElementById('challengePage');
+    const thirdPage = document.getElementById('thirdPage');
+    const signupForm = document.getElementById('signupForm');
+    const patternForm = document.getElementById('patternForm');
+    const pythonCodeInput = document.getElementById('pythonCode');
+
+    const ACCESS_CODE = '8B0000';
+    let attemptCount = 0;
+    let accessAttemptCount = 0;
+
+    signupForm.addEventListener('submit', e => {
+      e.preventDefault();
+      const accessCode = signupForm.password.value.trim();
+      if (accessCode === ACCESS_CODE) {
+        signupPage.style.display = 'none';
+        challengePage.style.display = 'block';
+      } else {
+        accessAttemptCount++;
+        if (accessAttemptCount >= 4) {
+          alert('hexadecimal..without hastag..');
+        } else {
+          alert('Incorrect Access Code!');
+        }
+      }
+    });
+
+    patternForm.addEventListener('submit', e => {
+      e.preventDefault();
+
+      const userCode = pythonCodeInput.value.replace(/\s+/g, '').toLowerCase();
+
+      // Target code pattern normalized
+      const targetPattern = `forinrange(7,0,-1):forjinrange(1,i):print("*",end="")print()`;
+
+      attemptCount++;
+
+      // Simple check: Does the user input contain the key pieces of the code ignoring whitespace & case?
+      if (userCode.includes('forinrange(7,0,-1)') &&
+          userCode.includes('forjinrange(1,i)') &&
+          userCode.includes('print("*",end="")') &&
+          userCode.includes('print()')) {
+        
+        // Transition to third page
+        challengePage.style.display = 'none';
+        thirdPage.style.display = 'flex';
+        document.body.style.background = 'none';
+        
+      } else {
+        if (attemptCount < 3) {
+          alert(`Incorrect code attempt ${attemptCount} of 3. Try again.`);
+          // Shake animation on textarea
+          pythonCodeInput.style.animation = 'shake 0.5s';
+          setTimeout(() => { pythonCodeInput.style.animation = ''; }, 500);
+        } else {
+          alert('WELCOME YOU WEAK MORTAL..');
+          // Transition to third page even after max attempts
+          challengePage.style.display = 'none';
+          thirdPage.style.display = 'flex';
+          document.body.style.background = 'none';
+        }
+      }
+    });
+
+    // Third page functionality
+    const eerieText = document.getElementById('eerieText');
+    const links = document.querySelectorAll('.corner-link');
+    const ifLink = document.getElementById('ifLink');
+    const youLink = document.getElementById('youLink');
+    const youScreen = document.getElementById('youScreen');
+    const youCountdownNumber = document.getElementById('youCountdownNumber');
+    const youFinalText = document.getElementById('youFinalText');
+    const countdownModal = document.getElementById('countdownModal');
+    const countdownNumber = document.getElementById('countdownNumber');
+    const finalText = document.getElementById('finalText');
+    const whiteScreen = document.getElementById('whiteScreen');
+    const finalWarningScreen = document.getElementById('finalWarningScreen');
+    const dareLink = document.getElementById('dareLink');
+
+    let countdownInterval;
+    let youCountdownInterval;
+    let clickCount = 0;
+
+    eerieText.addEventListener('click', () => {
+      clickCount++;
+      if (clickCount === 5) {
+        links.forEach(link => link.classList.add('show'));
+      }
+    });
+
+    ifLink.addEventListener('click', e => {
+      e.preventDefault();
+      countdownNumber.textContent = '5';
+      finalText.style.display = 'none';
+      countdownNumber.style.display = 'block';
+      countdownModal.style.display = 'flex';
+
+      let count = 5;
+      countdownInterval = setInterval(() => {
+        count--;
+        if (count > 0) {
+          countdownNumber.textContent = count;
+        } else {
+          clearInterval(countdownInterval);
+          countdownNumber.style.display = 'none';
+          finalText.style.display = 'block';
+        }
+      }, 1000);
+    });
+
+    // YOU link functionality
+    youLink.addEventListener('click', e => {
+      e.preventDefault();
+      youCountdownNumber.textContent = '5';
+      youFinalText.style.display = 'none';
+      youCountdownNumber.style.display = 'block';
+      youScreen.style.display = 'flex';
+
+      let count = 5;
+      youCountdownInterval = setInterval(() => {
+        count--;
+        if (count > 0) {
+          youCountdownNumber.textContent = count;
+        } else {
+          clearInterval(youCountdownInterval);
+          youCountdownNumber.style.display = 'none';
+          youFinalText.style.display = 'block';
+        }
+      }, 1000);
+    });
+
+    document.addEventListener('keydown', e => {
+      if (e.key === 'Backspace' && countdownModal.style.display === 'flex') {
+        e.preventDefault();
+        clearInterval(countdownInterval);
+        countdownModal.style.display = 'none';
+      }
+    });
+
+    // DARE.. link logic
+    dareLink.addEventListener('click', e => {
+      e.preventDefault();
+      whiteScreen.style.display = 'flex';
+    });
+
+    whiteScreen.addEventListener('click', () => {
+      whiteScreen.style.display = 'none';
+      finalWarningScreen.style.display = 'flex';
+    });
+
+    // Final warning text click count and bounce + redirect
+    let finalWarningClickCount = 0;
+
+    finalWarningScreen.addEventListener('click', () => {
+      finalWarningClickCount++;
+
+      // Add bounce animation class
+      finalWarningScreen.classList.add('bounce');
+
+      // Remove bounce class after animation ends to allow repeated bounces
+      finalWarningScreen.addEventListener('animationend', () => {
+        finalWarningScreen.classList.remove('bounce');
+      }, { once: true });
+
+      if (finalWarningClickCount === 7) {
+        window.location.href = "https://tenor.com/en-GB/view/rickroll-gif-23838017";
+        
+        // Add the thank you message after rickroll
+        setTimeout(() => {
+          const thanksDiv = document.createElement('div');
+          thanksDiv.innerHTML = 'THANK YOU MORTAL..';
+          Object.assign(thanksDiv.style, {
+            position: 'fixed', top: '0', left: '0',
+            width: '100vw', height: '100vh',
+            background: 'black', color: '#ff0000',
+            fontFamily: '"Creepster", cursive',
+            fontSize: '5em', display: 'flex',
+            justifyContent: 'center', alignItems: 'center',
+            zIndex: '9999', textShadow: '0 0 10px #ff0000, 0 0 20px #aa0000'
+          });
+          document.body.appendChild(thanksDiv);
+        }, 5000);
+      }
+      
+    });
+  </script>
+    
+</body>
+</html>
