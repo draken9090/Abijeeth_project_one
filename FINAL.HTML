@@ -335,6 +335,11 @@
       pointer-events: auto;
     }
 
+    .corner-link:hover {
+      background: rgba(255, 0, 0, 0.1);
+      transform: scale(1.1);
+    }
+
     .top-left    { top: 15px; left: 15px; }
     .top-right   { top: 15px; right: 15px; }
     .bottom-left { bottom: 15px; left: 15px; }
@@ -415,25 +420,6 @@
     .bounce {
       animation: bounce 0.5s ease;
     }
-
-    /* YOU screen styles */
-    #youScreen {
-      position: fixed;
-      top: 0; left: 0; right: 0; bottom: 0;
-      background: black;
-      color: #ff0000;
-      font-family: 'Creepster', cursive;
-      font-size: 6em;
-      text-align: center;
-      display: none;
-      justify-content: center;
-      align-items: center;
-      z-index: 300;
-      user-select: none;
-      text-shadow:
-        0 0 10px #ff0000,
-        0 0 30px #aa0000;
-    }
   </style>
 </head>
 <body>
@@ -499,24 +485,16 @@
 
     <a href="https://imgflip.com/i/9w5shm" target="_blank" class="corner-link top-left">TRY</a>
     <a href="#" id="ifLink" class="corner-link top-right">IF</a>
-    <a href="#" class="corner-link bottom-left" id="youLink">YOU</a>
+    <a href="#" id="youLink" class="corner-link bottom-left">YOU</a>
     <a href="#" id="dareLink" class="corner-link bottom-right">DARE..</a>
 
     <div id="countdownModal" aria-modal="true" role="dialog">
       <div id="countdownNumber">5</div>
-      <div id="finalText">SYBAU TS PMO</div>
+      <div id="finalText">THE WRONG WAY..</div>
     </div>
 
     <div id="whiteScreen">FINALLY YOU MADE IT..</div>
     <div id="finalWarningScreen">SEEKERS WHO SEEK WILL..?</div>
-  </div>
-
-  <!-- YOU Screen -->
-  <div id="youScreen">
-    <div>
-      <div id="youCountdownNumber">5</div>
-      <div id="youFinalText" style="display: none;">ESCAPE IS AN ILLUSION..</div>
-    </div>
   </div>
 
   <script>
@@ -589,9 +567,6 @@
     const links = document.querySelectorAll('.corner-link');
     const ifLink = document.getElementById('ifLink');
     const youLink = document.getElementById('youLink');
-    const youScreen = document.getElementById('youScreen');
-    const youCountdownNumber = document.getElementById('youCountdownNumber');
-    const youFinalText = document.getElementById('youFinalText');
     const countdownModal = document.getElementById('countdownModal');
     const countdownNumber = document.getElementById('countdownNumber');
     const finalText = document.getElementById('finalText');
@@ -600,7 +575,6 @@
     const dareLink = document.getElementById('dareLink');
 
     let countdownInterval;
-    let youCountdownInterval;
     let clickCount = 0;
 
     eerieText.addEventListener('click', () => {
@@ -630,25 +604,11 @@
       }, 1000);
     });
 
-    // YOU link functionality
+    // Fixed YOU link functionality
     youLink.addEventListener('click', e => {
       e.preventDefault();
-      youCountdownNumber.textContent = '5';
-      youFinalText.style.display = 'none';
-      youCountdownNumber.style.display = 'block';
-      youScreen.style.display = 'flex';
-
-      let count = 5;
-      youCountdownInterval = setInterval(() => {
-        count--;
-        if (count > 0) {
-          youCountdownNumber.textContent = count;
-        } else {
-          clearInterval(youCountdownInterval);
-          youCountdownNumber.style.display = 'none';
-          youFinalText.style.display = 'block';
-        }
-      }, 1000);
+      // Force open Wordle in new tab
+      window.open('https://www.citchennai.edu.in/', '_blank');
     });
 
     document.addEventListener('keydown', e => {
@@ -687,10 +647,10 @@
       if (finalWarningClickCount === 7) {
         window.location.href = "https://tenor.com/en-GB/view/rickroll-gif-23838017";
         
-        // Add the thank you message after rickroll
+        // Add the thank you message after rickroll with fade-in effect
         setTimeout(() => {
           const thanksDiv = document.createElement('div');
-          thanksDiv.innerHTML = 'THANK YOU MORTAL..';
+          thanksDiv.innerHTML = 'THANK YOU FOR PLAYING';
           Object.assign(thanksDiv.style, {
             position: 'fixed', top: '0', left: '0',
             width: '100vw', height: '100vh',
@@ -698,9 +658,17 @@
             fontFamily: '"Creepster", cursive',
             fontSize: '5em', display: 'flex',
             justifyContent: 'center', alignItems: 'center',
-            zIndex: '9999', textShadow: '0 0 10px #ff0000, 0 0 20px #aa0000'
+            zIndex: '9999', 
+            textShadow: '0 0 10px #ff0000, 0 0 30px #aa0000, 0 0 60px #550000',
+            opacity: '0',
+            transition: 'opacity 2s ease-in-out'
           });
           document.body.appendChild(thanksDiv);
+          
+          // Trigger fade-in effect
+          setTimeout(() => {
+            thanksDiv.style.opacity = '1';
+          }, 100);
         }, 5000);
       }
       
@@ -709,3 +677,4 @@
     
 </body>
 </html>
+    
